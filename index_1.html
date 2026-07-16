@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>名城祭 | 名城高校 文化祭 公式サイト</title>
+<meta name="description" content="名城高校 文化祭「名城祭」公式サイト。開催概要・企画紹介・タイムスケジュール・アクセスをご案内します。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+  /* ==========================================================
+     デザイントークン
+     色:夜空紺(背景)/夕焼け珊瑚(グラデ)/提灯朱(アクセント)/金砂(ハイライト)/和紙生成り(文字・カード)
+     フォント:見出し=筆致のある「Yuji Syuku」/本文=「Noto Sans JP」
+     ========================================================== */
+  :root{
+    --yozora-1:#160f3d;
+    --yozora-2:#2a1a52;
+    --yuyake:#ff6f47;
+    --chochin:#c1272d;
+    --chochin-light:#e8503f;
+    --kinsuna:#ffb703;
+    --washi:#fff7ea;
+    --washi-dim:#e9ddc8;
+    --ink:#160f3d;
+
+    --font-display:'Yuji Syuku', serif;
+    --font-body:'Noto Sans JP', sans-serif;
+
+    --header-h:76px;
+    --ease:cubic-bezier(.22,.68,0,1);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  html.no-motion, html.no-motion *{ scroll-behavior:auto !important; animation:none !important; transition:none !important; }
+
+  @media (prefers-reduced-motion: reduce){
+    html:not(.motion-forced) *{ animation:none !important; transition:none !important; }
+  }
+
+  body{
+    margin:0;
+    background:var(--yozora-1);
+    color:var(--washi);
+    font-family:var(--font-body);
+    line-height:1.8;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+  img{ max-width:100%; display:block; }
+  section{ position:relative; }
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  /* ---------- 汎用:画像/動画プレースホルダー ----------
+     ここに実際の写真・動画が用意できたら、この <div class="media-slot"> ごと
+     <img src="images/○○.jpg" alt="説明"> または <video> タグに置き換えてください。
+  ------------------------------------------------------------- */
+  .media-slot{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:
+      repeating-linear-gradient(135deg, rgba(255,247,234,.05) 0 10px, rgba(255,247,234,.09) 10px 20px),
+      linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    border:2px dashed rgba(255,247,234,.35);
+    border-radius:16px;
+    color:var(--washi-dim);
+    font-size:.85rem;
+    letter-spacing:.05em;
+    padding:20px;
+    min-height:140px;
+  }
+  .media-slot__label{ opacity:.85; }
+  .media-slot__label small{ display:block; margin-top:6px; font-size:.75rem; opacity:.7; }
+  .media-slot--hero{ aspect-ratio:16/10; }
+  .media-slot--video{ aspect-ratio:16/9; }
+  .media-slot--card{ aspect-ratio:4/3; border-radius:12px 12px 0 0; }
+  .media-slot--map{ aspect-ratio:16/9; }
+  .media-slot--square{ aspect-ratio:1/1; border-radius:50%; }
+
+  /* ---------- スクロールリビール ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .9s var(--ease), transform .9s var(--ease);
+  }
+  .reveal.is-visible{ opacity:1; transform:translateY(0); }
+  .reveal-delay-1{ transition-delay:.08s; }
+  .reveal-delay-2{ transition-delay:.16s; }
+  .reveal-delay-3{ transition-delay:.24s; }
+  .reveal-delay-4{ transition-delay:.32s; }
+
+  /* ---------- 見出し共通:筆で描くアンダーライン ---------- */
+  .section-head{ text-align:center; margin-bottom:56px; }
+  .eyebrow{
+    display:inline-block;
+    font-size:.8rem;
+    letter-spacing:.25em;
+    color:var(--kinsuna);
+    margin-bottom:10px;
+  }
+  .section-title{
+    font-family:var(--font-display);
+    font-size:clamp(2rem, 5vw, 3rem);
+    margin:0 0 14px;
+    color:var(--washi);
+  }
+  .section-title .stroke{
+    position:relative;
+    display:inline-block;
+  }
+  .brush-underline{
+    display:block;
+    width:min(220px, 60%);
+    height:14px;
+    margin:6px auto 0;
+  }
+  .brush-underline path{
+    fill:none;
+    stroke:var(--chochin-light);
+    stroke-width:8;
+    stroke-linecap:round;
+    stroke-dasharray:240;
+    stroke-dashoffset:240;
+    transition:stroke-dashoffset 1s var(--ease) .1s;
+  }
+  .is-visible .brush-underline path{ stroke-dashoffset:0; }
+  .section-lead{ color:var(--washi-dim); max-width:520px; margin:0 auto; font-size:.98rem; }
+
+  /* ================= ヘッダー ================= */
+  .site-header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    height:var(--header-h);
+    display:flex; align-items:center;
+    background:rgba(22,15,61,.35);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,247,234,.08);
+    transition:background .4s var(--ease), height .4s var(--ease);
+  }
+  .site-header.is-scrolled{ background:rgba(22,15,61,.85); height:60px; }
+
+  .site-header .wrap{
+    width:100%;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{ display:flex; align-items:baseline; gap:10px; }
+  .brand-main{ font-family:var(--font-display); font-size:1.6rem; letter-spacing:.05em; }
+  .brand-sub{ font-size:.65rem; letter-spacing:.15em; color:var(--washi-dim); }
+
+  .nav-links{ display:flex; gap:32px; }
+  .nav-links a{
+    font-size:.88rem; letter-spacing:.05em; position:relative; padding:4px 0;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:-2px; width:0; height:2px;
+    background:var(--kinsuna); transition:width .3s var(--ease);
+  }
+  .nav-links a:hover::after{ width:100%; }
+
+  .header-actions{ display:flex; align-items:center; gap:14px; }
+
+  .motion-toggle{
+    background:transparent;
+    border:1px solid rgba(255,247,234,.4);
+    color:var(--washi);
+    font-size:.72rem;
+    letter-spacing:.05em;
+    padding:7px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:border-color .3s, background .3s;
+  }
+  .motion-toggle:hover{ border-color:var(--kinsuna); }
+
+  .cta-btn{
+    background:linear-gradient(120deg, var(--chochin), var(--yuyake));
+    color:var(--washi);
+    padding:10px 20px;
+    border-radius:999px;
+    font-size:.85rem;
+    font-weight:700;
+    letter-spacing:.05em;
+    box-shadow:0 6px 18px rgba(193,39,45,.35);
+    transition:transform .3s var(--ease), box-shadow .3s var(--ease);
+    white-space:nowrap;
+  }
+  .cta-btn:hover{ transform:translateY(-2px); box-shadow:0 10px 24px rgba(193,39,45,.45); }
+
+  .menu-toggle{
+    display:none;
+    width:34px; height:26px;
+    border:none; background:transparent; cursor:pointer;
+    flex-direction:column; justify-content:space-between;
+    padding:2px;
+  }
+  .menu-toggle span{
+    display:block; height:2px; width:100%; background:var(--washi);
+    transition:transform .35s var(--ease), opacity .35s var(--ease);
+  }
+  html.nav-open .menu-toggle span:nth-child(1){ transform:translateY(11px) rotate(45deg); }
+  html.nav-open .menu-toggle span:nth-child(2){ opacity:0; }
+  html.nav-open .menu-toggle span:nth-child(3){ transform:translateY(-11px) rotate(-45deg); }
+
+  @media (max-width:860px){
+    .nav-links{
+      position:fixed; top:var(--header-h); left:0; right:0; bottom:0;
+      flex-direction:column; gap:0;
+      background:rgba(22,15,61,.98);
+      transform:translateY(-110%);
+      transition:transform .4s var(--ease);
+      padding:20px 24px;
+      overflow-y:auto;
+    }
+    html.nav-open .nav-links{ transform:translateY(0); }
+    .nav-links a{ padding:16px 0; border-bottom:1px solid rgba(255,247,234,.08); font-size:1.05rem; }
+    .cta-btn{ display:none; }
+    .menu-toggle{ display:flex; }
+  }
+
+  /* ================= ヒーロー ================= */
+  .hero{
+    min-height:100svh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    padding:calc(var(--header-h) + 40px) 24px 80px;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(255,183,3,.18), transparent 55%),
+      linear-gradient(180deg, var(--yozora-1) 0%, #3a1f5a 38%, #8a3a55 68%, var(--yuyake) 100%);
+    overflow:hidden;
+  }
+
+  /* 提灯(ちょうちん)が漂う演出。実写素材が用意できたら削除しても構いません */
+  .lantern-field{ position:absolute; inset:0; pointer-events:none; z-index:0; }
+  .lantern{
+    position:absolute;
+    width:34px; height:46px;
+    border-radius:50% 50% 45% 45% / 55% 55% 45% 45%;
+    background:radial-gradient(circle at 35% 30%, var(--kinsuna), var(--chochin) 70%);
+    box-shadow:0 0 18px rgba(255,183,3,.55);
+    opacity:.85;
+    animation:drift 9s ease-in-out infinite;
+  }
+  .lantern::before, .lantern::after{
+    content:''; position:absolute; left:50%; width:14px; height:3px;
+    background:rgba(255,247,234,.7); transform:translateX(-50%);
+  }
+  .lantern::before{ top:-3px; } .lantern::after{ bottom:-3px; }
+  .lantern.l1{ left:8%;  top:60%; animation-duration:10s; }
+  .lantern.l2{ left:18%; top:20%; animation-duration:8s;  animation-delay:.6s; transform:scale(.75); }
+  .lantern.l3{ left:82%; top:65%; animation-duration:11s; animation-delay:1.2s; }
+  .lantern.l4{ left:90%; top:22%; animation-duration:9s;  animation-delay:.3s; transform:scale(.65); }
+  .lantern.l5{ left:50%; top:12%; animation-duration:12s; animation-delay:.9s; transform:scale(.55); opacity:.6; }
+  @keyframes drift{
+    0%,100%{ transform:translateY(0) rotate(-2deg); }
+    50%{ transform:translateY(-22px) rotate(2deg); }
+  }
+
+  .hero-inner{ position:relative; z-index:1; max-width:760px; }
+  .hero-eyebrow{
+    font-size:.85rem; letter-spacing:.3em; color:var(--kinsuna); margin-bottom:18px;
+  }
+  .hero-title{
+    font-family:var(--font-display);
+    font-size:clamp(2.6rem, 9vw, 5.2rem);
+    line-height:1.25;
+    margin:0 0 20px;
+  }
+  .hero-tagline{
+    font-size:clamp(1rem, 2.4vw, 1.15rem);
+    color:var(--washi-dim);
+    margin:0 0 34px;
+  }
+  .hero-dates{
+    display:inline-flex; gap:14px; flex-wrap:wrap; justify-content:center;
+    font-size:.85rem; letter-spacing:.05em; color:var(--washi);
+    background:rgba(255,247,234,.08);
+    border:1px solid rgba(255,247,234,.2);
+    padding:10px 20px; border-radius:999px; margin-bottom:40px;
+  }
+
+  .hero-media{ position:relative; z-index:1; width:min(640px, 88vw); margin:0 auto; }
+
+  .scroll-cue{
+    position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    font-size:.72rem; letter-spacing:.2em; color:var(--washi-dim);
+    z-index:1;
+  }
+  .scroll-cue .bar{
+    width:1px; height:34px; background:linear-gradient(var(--kinsuna), transparent);
+    animation:cue 1.8s ease-in-out infinite;
+  }
+  @keyframes cue{
+    0%{ transform:scaleY(0); transform-origin:top; }
+    50%{ transform:scaleY(1); transform-origin:top; }
+    50.01%{ transform-origin:bottom; }
+    100%{ transform:scaleY(0); transform-origin:bottom; }
+  }
+
+  /* ================= ステートメント(大文字リビール) ================= */
+  .statement{
+    padding:140px 24px;
+    text-align:center;
+    background:linear-gradient(180deg, var(--yuyake) 0%, #7a2f4d 45%, var(--yozora-2) 100%);
+  }
+  .statement-text{
+    font-family:var(--font-display);
+    font-size:clamp(2rem, 7vw, 4.2rem);
+    line-height:1.5;
+    margin:0;
+  }
+
+  /* ================= 紹介ムービー ================= */
+  .movie{ padding:120px 0; background:var(--yozora-1); }
+  .movie .media-slot{ max-width:820px; margin:0 auto; }
+
+  /* ================= 開催概要 ================= */
+  .overview{ padding:120px 0; background:var(--yozora-2); }
+  .spec-table{
+    width:100%; max-width:640px; margin:0 auto;
+    border-collapse:collapse;
+    background:rgba(255,247,234,.04);
+    border-radius:16px; overflow:hidden;
+  }
+  .spec-table tr{ border-bottom:1px solid rgba(255,247,234,.1); }
+  .spec-table tr:last-child{ border-bottom:none; }
+  .spec-table th, .spec-table td{
+    text-align:left; padding:18px 24px; font-size:.92rem; vertical-align:top;
+  }
+  .spec-table th{
+    width:36%; color:var(--kinsuna); font-weight:700; letter-spacing:.05em;
+  }
+
+  /* ================= 企画紹介 ================= */
+  .programs{ padding:120px 0; background:var(--yozora-1); }
+  .program-grid{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:24px;
+  }
+  @media (max-width:920px){ .program-grid{ grid-template-columns:repeat(2, 1fr); } }
+  @media (max-width:560px){ .program-grid{ grid-template-columns:1fr; } }
+
+  .program-card{
+    background:rgba(255,247,234,.05);
+    border:1px solid rgba(255,247,234,.1);
+    border-radius:12px;
+    overflow:hidden;
+    transition:transform .4s var(--ease), border-color .4s var(--ease);
+  }
+  .program-card:hover{ transform:translateY(-6px); border-color:var(--kinsuna); }
+  .program-card-body{ padding:20px; }
+  .program-tag{ font-size:.7rem; letter-spacing:.1em; color:var(--kinsuna); }
+  .program-name{ font-family:var(--font-display); font-size:1.25rem; margin:8px 0 10px; }
+  .program-desc{ font-size:.85rem; color:var(--washi-dim); margin:0; }
+
+  /* ================= タイムスケジュール ================= */
+  .schedule{ padding:120px 0; background:var(--yozora-2); }
+  .day-tabs{
+    display:flex; justify-content:center; gap:12px; margin-bottom:48px;
+  }
+  .day-tab{
+    background:transparent; border:1px solid rgba(255,247,234,.3); color:var(--washi);
+    padding:10px 26px; border-radius:999px; font-size:.85rem; letter-spacing:.05em; cursor:pointer;
+    transition:background .3s, border-color .3s;
+  }
+  .day-tab.is-active{ background:var(--chochin); border-color:var(--chochin); }
+
+  .timeline{ max-width:560px; margin:0 auto; display:none; }
+  .timeline.is-active{ display:block; }
+  .timeline-row{
+    display:flex; gap:24px; padding:18px 0; border-left:2px solid rgba(255,247,234,.15);
+    padding-left:24px; position:relative;
+  }
+  .timeline-row::before{
+    content:''; position:absolute; left:-7px; top:24px; width:12px; height:12px;
+    border-radius:50%; background:var(--kinsuna); box-shadow:0 0 0 4px rgba(255,183,3,.2);
+  }
+  .timeline-time{ font-family:var(--font-display); font-size:1.1rem; min-width:82px; color:var(--kinsuna); }
+  .timeline-event{ font-size:.92rem; }
+
+  /* ================= アクセス ================= */
+  .access{ padding:120px 0; background:var(--yozora-1); }
+  .access-grid{
+    display:grid; grid-template-columns:1.1fr .9fr; gap:40px; align-items:start;
+  }
+  @media (max-width:800px){ .access-grid{ grid-template-columns:1fr; } }
+  .access-info dt{ color:var(--kinsuna); font-size:.78rem; letter-spacing:.08em; margin-top:20px; }
+  .access-info dt:first-child{ margin-top:0; }
+  .access-info dd{ margin:6px 0 0; font-size:.92rem; color:var(--washi-dim); }
+
+  /* ================= お問い合わせ ================= */
+  .contact{ padding:120px 0 140px; background:var(--yozora-2); text-align:center; }
+  .contact-card{
+    max-width:520px; margin:0 auto;
+    background:rgba(255,247,234,.05);
+    border:1px solid rgba(255,247,234,.12);
+    border-radius:16px; padding:44px 32px;
+  }
+  .contact-mail{
+    display:inline-block; margin-top:18px; font-size:1rem;
+    color:var(--washi); border-bottom:1px solid var(--kinsuna); padding-bottom:2px;
+  }
+  .sns-row{ display:flex; justify-content:center; gap:16px; margin-top:28px; }
+  .sns-slot{ width:48px; height:48px; }
+
+  /* ================= フッター ================= */
+  .site-footer{
+    background:var(--yozora-1);
+    padding:36px 0;
+    text-align:center;
+    font-size:.78rem;
+    color:var(--washi-dim);
+    border-top:1px solid rgba(255,247,234,.08);
+  }
+
+  :focus-visible{ outline:2px solid var(--kinsuna); outline-offset:3px; }
+</style>
+</head>
+<body>
+
+<!-- ================= ヘッダー ================= -->
+<header class="site-header" id="siteHeader">
+  <div class="wrap">
+    <a href="#top" class="brand">
+      <span class="brand-main">名城祭</span>
+      <span class="brand-sub">MEIJO HIGH SCHOOL FESTIVAL</span>
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#overview">概要</a>
+      <a href="#programs">企画</a>
+      <a href="#schedule">タイムスケジュール</a>
+      <a href="#access">アクセス</a>
+      <a href="#contact">お問い合わせ</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="motion-toggle" id="motionToggle" aria-pressed="false">アニメーション:ON</button>
+      <a href="#access" class="cta-btn">アクセスを見る</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="メニューを開く" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= ヒーロー ================= -->
+<section class="hero" id="top">
+  <div class="lantern-field" aria-hidden="true">
+    <div class="lantern l1"></div>
+    <div class="lantern l2"></div>
+    <div class="lantern l3"></div>
+    <div class="lantern l4"></div>
+    <div class="lantern l5"></div>
+  </div>
+
+  <div class="hero-inner">
+    <p class="hero-eyebrow">名城高校 文化祭</p>
+    <h1 class="hero-title">灯がともる、<br>青春がはじける。</h1>
+    <p class="hero-tagline">一年間の想いが集まる、二日間。</p>
+    <div class="hero-dates">
+      <span>2026年●月●日(土)・●日(日)</span>
+      <span>9:00〜15:00(予定)</span>
+    </div>
+  </div>
+
+  <!-- ここにメインビジュアル(写真・動画)を追加してください -->
+  <div class="hero-media">
+    <div class="media-slot media-slot--hero">
+      <span class="media-slot__label">メインビジュアル<small>ここに文化祭のキー画像・動画を追加</small></span>
+    </div>
+  </div>
+
+  <div class="scroll-cue"><span>SCROLL</span><span class="bar"></span></div>
+</section>
+
+<!-- ================= ステートメント ================= -->
+<section class="statement">
+  <p class="statement-text reveal">灯がともる、<br>青春がはじける。</p>
+</section>
+
+<!-- ================= 紹介ムービー ================= -->
+<section class="movie">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">MOVIE</p>
+      <h2 class="section-title">紹介ムービー</h2>
+      <svg class="brush-underline" viewBox="0 0 220 14"><path d="M6 8 C 60 2, 160 2, 214 8"/></svg>
+      <p class="section-lead">文化祭の雰囲気をムービーでチェック。</p>
+    </div>
+    <!-- ここに紹介動画(YouTube埋め込み等)を追加してください -->
+    <div class="media-slot media-slot--video reveal">
+      <span class="media-slot__label">紹介ムービー<small>ここに動画(YouTube埋め込み等)を追加</small></span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 開催概要 ================= -->
+<section class="overview" id="overview">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">OVERVIEW</p>
+      <h2 class="section-title">開催概要</h2>
+      <svg class="brush-underline" viewBox="0 0 220 14"><path d="M6 8 C 60 2, 160 2, 214 8"/></svg>
+    </div>
+    <table class="spec-table reveal">
+      <tr><th>開催日</th><td>2026年●月●日(土)・●月●日(日)</td></tr>
+      <tr><th>開催時間</th><td>9:00〜15:00(予定)</td></tr>
+      <tr><th>会場</th><td>名城高校 校内</td></tr>
+      <tr><th>入場料</th><td>入場無料</td></tr>
+      <tr><th>対象</th><td>どなたでもご来場いただけます</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ================= 企画・出し物紹介 ================= -->
+<section class="programs" id="programs">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">PROGRAM</p>
+      <h2 class="section-title">お楽しみ企画</h2>
+      <svg class="brush-underline" viewBox="0 0 220 14"><path d="M6 8 C 60 2, 160 2, 214 8"/></svg>
+      <p class="section-lead">クラス・部活動が趣向を凝らした企画が勢揃い。</p>
+    </div>
+
+    <div class="program-grid">
+      <div class="program-card reveal">
+        <!-- 企画写真を追加する場合はここ -->
+        <div class="media-slot media-slot--card"><span class="media-slot__label">画像</span></div>
+        <div class="program-card-body">
+          <p class="program-tag">模擬店</p>
+          <h3 class="program-name">食べ歩きグルメ</h3>
+          <p class="program-desc">各クラス自慢のフード・スイーツが集合。</p>
+        </div>
+      </div>
+
+      <div class="program-card reveal reveal-delay-1">
+        <div class="media-slot media-slot--card"><span class="media-slot__label">画像</span></div>
+        <div class="program-card-body">
+          <p class="program-tag">ステージ</p>
+          <h3 class="program-name">音楽・ダンス・演劇</h3>
+          <p class="program-desc">体育館特設ステージで熱いパフォーマンス。</p>
+        </div>
+      </div>
+
+      <div class="program-card reveal reveal-delay-2">
+        <div class="media-slot media-slot--card"><span class="media-slot__label">画像</span></div>
+        <div class="program-card-body">
+          <p class="program-tag">展示</p>
+          <h3 class="program-name">力作ギャラリー</h3>
+          <p class="program-desc">美術部・有志による展示コーナー。</p>
+        </div>
+      </div>
+
+      <div class="program-card reveal reveal-delay-3">
+        <div class="media-slot media-slot--card"><span class="media-slot__label">画像</span></div>
+        <div class="program-card-body">
+          <p class="program-tag">体験企画</p>
+          <h3 class="program-name">お化け屋敷&謎解き</h3>
+          <p class="program-desc">スリルと謎解きが楽しめる人気企画。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= タイムスケジュール ================= -->
+<section class="schedule" id="schedule">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">SCHEDULE</p>
+      <h2 class="section-title">タイムスケジュール</h2>
+      <svg class="brush-underline" viewBox="0 0 220 14"><path d="M6 8 C 60 2, 160 2, 214 8"/></svg>
+    </div>
+
+    <div class="day-tabs reveal">
+      <button class="day-tab is-active" data-day="1">1日目(土)</button>
+      <button class="day-tab" data-day="2">2日目(日)</button>
+    </div>
+
+    <div class="timeline is-active reveal" data-day-panel="1">
+      <div class="timeline-row"><span class="timeline-time">9:00</span><span class="timeline-event">開場・オープニング</span></div>
+      <div class="timeline-row"><span class="timeline-time">9:30</span><span class="timeline-event">ステージ企画スタート</span></div>
+      <div class="timeline-row"><span class="timeline-time">12:00</span><span class="timeline-event">模擬店 販売開始</span></div>
+      <div class="timeline-row"><span class="timeline-time">15:00</span><span class="timeline-event">閉場</span></div>
+    </div>
+
+    <div class="timeline" data-day-panel="2">
+      <div class="timeline-row"><span class="timeline-time">9:00</span><span class="timeline-event">開場</span></div>
+      <div class="timeline-row"><span class="timeline-time">10:00</span><span class="timeline-event">ダンスパフォーマンス</span></div>
+      <div class="timeline-row"><span class="timeline-time">13:00</span><span class="timeline-event">有志ライブ</span></div>
+      <div class="timeline-row"><span class="timeline-time">14:30</span><span class="timeline-event">閉会式</span></div>
+      <div class="timeline-row"><span class="timeline-time">15:00</span><span class="timeline-event">閉場</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= アクセス ================= -->
+<section class="access" id="access">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">ACCESS</p>
+      <h2 class="section-title">アクセス</h2>
+      <svg class="brush-underline" viewBox="0 0 220 14"><path d="M6 8 C 60 2, 160 2, 214 8"/></svg>
+    </div>
+
+    <div class="access-grid">
+      <!-- ここに地図(Googleマップ埋め込み等)を追加してください -->
+      <div class="media-slot media-slot--map reveal">
+        <span class="media-slot__label">地図<small>ここにGoogleマップ等を追加</small></span>
+      </div>
+
+      <dl class="access-info reveal reveal-delay-1">
+        <dt>住所</dt>
+        <dd>〒●●●-●●●● 愛知県●●市●●町●-●-●</dd>
+        <dt>電車でお越しの方</dt>
+        <dd>●●線「●●駅」から徒歩●分</dd>
+        <dt>バスでお越しの方</dt>
+        <dd>●●バス「●●」下車すぐ</dd>
+        <dt>お車でお越しの方</dt>
+        <dd>臨時駐車場のご用意はございません。近隣の有料駐車場をご利用ください。</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ================= お問い合わせ ================= -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">CONTACT</p>
+      <h2 class="section-title">お問い合わせ</h2>
+      <svg class="brush-underline" viewBox="0 0 220 14"><path d="M6 8 C 60 2, 160 2, 214 8"/></svg>
+    </div>
+
+    <div class="contact-card reveal">
+      <p class="section-lead">文化祭に関するお問い合わせはこちらからお願いします。</p>
+      <a class="contact-mail" href="mailto:info@example.com">info@example.com</a>
+
+      <div class="sns-row">
+        <!-- SNSアイコン画像を追加する場合はここに -->
+        <div class="media-slot sns-slot" style="min-height:0;"></div>
+        <div class="media-slot sns-slot" style="min-height:0;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= フッター ================= -->
+<footer class="site-footer">
+  <div class="wrap">
+    <p>© 2026 名城高校 文化祭実行委員会</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- ヘッダー:スクロールで縮小 ---- */
+  var header = document.getElementById('siteHeader');
+  var onScroll = function(){
+    if (window.scrollY > 40) header.classList.add('is-scrolled');
+    else header.classList.remove('is-scrolled');
+  };
+  window.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  /* ---- モバイルメニュー ---- */
+  var menuToggle = document.getElementById('menuToggle');
+  var navLinks = document.getElementById('navLinks');
+  menuToggle.addEventListener('click', function(){
+    var isOpen = document.documentElement.classList.toggle('nav-open');
+    menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navLinks.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click', function(){
+      document.documentElement.classList.remove('nav-open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  /* ---- アニメーションON/OFF切り替え ---- */
+  var motionToggle = document.getElementById('motionToggle');
+  motionToggle.addEventListener('click', function(){
+    var reduced = document.documentElement.classList.toggle('no-motion');
+    motionToggle.textContent = reduced ? 'アニメーション:OFF' : 'アニメーション:ON';
+    motionToggle.setAttribute('aria-pressed', reduced ? 'true' : 'false');
+    if (reduced){
+      document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('is-visible'); });
+    }
+  });
+
+  /* ---- スクロールリビール ---- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold:.2, rootMargin:'0px 0px -60px 0px' });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+  }
+
+  /* ---- タイムスケジュール タブ切り替え ---- */
+  var dayTabs = document.querySelectorAll('.day-tab');
+  var panels = document.querySelectorAll('.timeline');
+  dayTabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      var day = tab.getAttribute('data-day');
+      dayTabs.forEach(function(t){ t.classList.toggle('is-active', t === tab); });
+      panels.forEach(function(p){
+        p.classList.toggle('is-active', p.getAttribute('data-day-panel') === day);
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
